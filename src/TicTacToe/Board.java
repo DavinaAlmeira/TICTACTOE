@@ -131,7 +131,7 @@ public class Board {
         return false;  // No 3-in-a-line found
     }
     public void loadImage(){
-        ImageIcon icon = new ImageIcon("src\background.jpg");
+        ImageIcon icon = new ImageIcon("src/background.jpg");
         backgroundImage = icon.getImage();
     }
 

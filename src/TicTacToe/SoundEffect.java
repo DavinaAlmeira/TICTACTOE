@@ -30,10 +30,10 @@
   * For Eclipse, place the audio file under "src", which will be copied into "bin".
   */
  public enum SoundEffect {
-    player1Name("kitty.wav"),
-    player2Name("dog.wav"),
-    WIN("win.wav"),
-    DRAW("draw.wav");
+    player1Name("src/kitty.wav"),
+    player2Name("src/dog.wav"),
+    WIN("src/win.wav"),
+    DRAW("src/draw.wav");
  
     /** Nested enumeration for specifying volume */
     public static enum Volume {
