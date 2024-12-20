@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 // Import game packages
 import connectFour.GameMain;
 import TicTacToe.GameMainTicTac;
-import TicTacToeAI.GameMainAI;
+import TicTacToeAI2.GameMainAI;
 
 public class GameSelector {
     public static void main(String[] args) {
