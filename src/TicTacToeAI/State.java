@@ -8,11 +8,11 @@
  * 3 - 5026231148 - Tiara Aulia Azadirachta Indica
  */
 
-package TicTacToeAI;
-
 /**
  *  The enum State contains the various game states of the TTT game
  */
+package TicTacToeAI;
+
 public enum State {  // to save as "State.java"
-    PLAYING, DRAW, CROSS_WON, NOUGHT_WON
+   PLAYING, DRAW, CROSS_WON, NOUGHT_WON
 }

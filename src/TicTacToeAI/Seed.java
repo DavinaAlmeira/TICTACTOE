@@ -8,42 +8,10 @@
  * 3 - 5026231148 - Tiara Aulia Azadirachta Indica
  */
 
+
 package TicTacToeAI;
 
-import java.awt.Image;
-import java.net.URL;
-import javax.swing.ImageIcon;
 
-public enum Seed {
-    CROSS("X", "TicTacToeAI2/cat.gif"),   // Misalnya cat.gif untuk CROSS
-    NOUGHT("O", "TicTacToeAI2/doggie.gif"), // Misalnya doggie.gif untuk NOUGHT
-    NO_SEED(" ", null),
-    EMPTY(" ", null);
-
-    private String displayName;
-    private Image img = null;
-
-    // Constructor untuk menginisialisasi gambar
-    private Seed(String name, String imageFilename) {
-        this.displayName = name;
-
-        if (imageFilename != null) {
-            // Memuat gambar dengan URL
-            URL imgURL = getClass().getClassLoader().getResource(imageFilename);
-            if (imgURL != null) {
-                ImageIcon icon = new ImageIcon(imgURL);
-                img = icon.getImage();
-            } else {
-                System.err.println("Couldn't find file " + imageFilename);
-            }
-        }
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public Image getImage() {
-        return img;
-    }
+public enum Seed {   // to save as "Seed.java"
+   CROSS, NOUGHT, NO_SEED, EMPTY
 }

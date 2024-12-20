@@ -13,7 +13,7 @@ package TicTacToeAI;
 import java.util.*;
 /** AIPlayer using Minimax algorithm */
 public class AIPlayerMinimax extends AIPlayer {
-
+    
 
     /** Constructor with the given game board */
     public AIPlayerMinimax(Board board) {
@@ -90,8 +90,8 @@ public class AIPlayerMinimax extends AIPlayer {
 
     /** The heuristic evaluation function for the current board
      @Return +100, +10, +1 for EACH 3-, 2-, 1-in-a-line for computer.
-     -100, -10, -1 for EACH 3-, 2-, 1-in-a-line for opponent.
-     0 otherwise   */
+    -100, -10, -1 for EACH 3-, 2-, 1-in-a-line for opponent.
+    0 otherwise   */
     private int evaluate() {
         int score = 0;
         // Evaluate score for each of the 8 lines (3 rows, 3 columns, 2 diagonals)
@@ -108,8 +108,8 @@ public class AIPlayerMinimax extends AIPlayer {
 
     /** The heuristic evaluation function for the given line of 3 cells
      @Return +100, +10, +1 for 3-, 2-, 1-in-a-line for computer.
-     -100, -10, -1 for 3-, 2-, 1-in-a-line for opponent.
-     0 otherwise */
+    -100, -10, -1 for 3-, 2-, 1-in-a-line for opponent.
+    0 otherwise */
     private int evaluateLine(int row1, int col1, int row2, int col2, int row3, int col3) {
         int score = 0;
 
