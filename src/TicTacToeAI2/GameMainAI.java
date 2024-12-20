@@ -55,7 +55,7 @@ public class GameMainAI extends JPanel {
         aiPlayer.setSeed(Seed.NOUGHT); // AI menggunakan Seed NOUGHT (lingkaran)
 
         // This JPanel fires MouseEvent
-      super.addMouseListener(new MouseAdapter() {
+        super.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {  // mouse-clicked handler
               int mouseX = e.getX();
