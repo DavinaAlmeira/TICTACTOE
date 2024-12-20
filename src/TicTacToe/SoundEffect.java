@@ -20,9 +20,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * For Eclipse, place the audio file under "src", which will be copied into "bin".
  */
 public enum SoundEffect {
-    EAT_FOOD("kitty.wav"),
-    EXPLODE("puppy.wav"),
-    DIE("kitty.wav");
+    player1("kitty.wav"),
+    player2("dog.wav"),
+    WIN("win.wav"),
+    DRAW("draw.wav");
 
     /** Nested enumeration for specifying volume */
     public static enum Volume {
@@ -37,19 +38,18 @@ public enum SoundEffect {
     /** Private Constructor to construct each element of the enum with its own sound file. */
     private SoundEffect(String soundFileName) {
         try {
-            URL soundFile = getClass().getResource("kitty.wav"); // Ganti path sesuai dengan lokasi file suara Anda
+            URL soundFile = this.getClass().getResource(soundFileName); // Ganti path sesuai lokasi file
             if (soundFile != null) {
                 AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-                Clip clip = AudioSystem.getClip();
+                clip = AudioSystem.getClip();
                 clip.open(audioIn);
-                clip.start();
             } else {
-                System.out.println("Sound file not found!");
+                System.err.println("Sound file not found: " + soundFileName);
             }
         } catch (Exception e) {
+            System.err.println("Error loading sound file: " + soundFileName);
             e.printStackTrace();
         }
-
     }
 
     /** Play or Re-play the sound effect from the beginning, by rewinding. */

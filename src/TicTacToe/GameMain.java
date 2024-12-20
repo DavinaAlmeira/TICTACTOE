@@ -86,12 +86,19 @@ public class GameMain extends JPanel {
                 int col = mouseX / Cell.SIZE;
 
                 // Check if the clicked position is within the bounds of the board
-                if (row < 0 || row >= Board.ROWS || col < 0 || col >= Board.COLS) return; // Ignore clicks outside the board
+                if (row < 0 || row >= Board.ROWS || col < 0 || col >= Board.COLS) {
+                    return; // Ignore clicks outside the board
+                }
 
                 if (currentState == State.PLAYING) {
                     if (board.cells[row][col].content == Seed.NO_SEED) {
                         // Update cells[][] and return the new game state after the move
                         currentState = board.stepGame(currentPlayer, row, col);
+                        if (currentPlayer == Seed.CROSS) {
+                            SoundEffect.player1.play();
+                        } else if (currentPlayer == Seed.NOUGHT) {
+                            SoundEffect.player2.play();
+                        }
                         if (currentState == State.PLAYING) {
                             // Switch player
                             currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
@@ -105,17 +112,18 @@ public class GameMain extends JPanel {
                                     //AI move is invalid or null
                                     System.out.println("AI move is invalid. Skipping AI turn.");
                                 }
-                                if (currentState == State.PLAYING && currentPlayer == Seed.NOUGHT) {
-                                    int[] bestMove = board.getBestMove(Seed.NOUGHT, Seed.CROSS);
-                                    if (bestMove[0] != -1) {
-                                        currentState = board.stepGame(Seed.NOUGHT, bestMove[0], bestMove[1]);
-                                    }
-                                    // Switch back to player 1
-                                    currentPlayer = Seed.CROSS;
-                                }
+                                // Switch back to player 1
+                                currentPlayer = Seed.CROSS;
                             }
                         }
+                    else {
+                        if (currentState == State.CROSS_WON || currentState == State.NOUGHT_WON) {
+                            SoundEffect.WIN.play();
+                        } else if (currentState == State.DRAW) {
+                            SoundEffect.DRAW.play();
+                        }
                     }
+                }
                 } else {        // game over
                     newGame();  // restart the game
                 }
@@ -123,6 +131,7 @@ public class GameMain extends JPanel {
                 repaint();  // Callback paintComponent().
             }
         });
+        
 /*
        /// Play appropriate sound clip
         if (currentState == State.PLAYING) {
