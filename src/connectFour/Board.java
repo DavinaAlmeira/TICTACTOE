@@ -123,7 +123,7 @@ public class Board {
     }
     
     public void loadImage(){
-        ImageIcon icon = new ImageIcon("background.jpg");
+        ImageIcon icon = new ImageIcon("src/background.jpg");
         backgroundImage = icon.getImage();
     }
 

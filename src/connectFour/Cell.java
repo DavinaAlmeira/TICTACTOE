@@ -10,8 +10,8 @@ public class Cell {
     public static final int PADDING = 24;
     public static final int SEED_SIZE = 72;
     public static final int SEED_STROKE_WIDTH = 8;
-    private static final ImageIcon CROSS_ICON = new ImageIcon("cat.gif");
-    private static final ImageIcon NOUGHT_ICON = new ImageIcon("doggie.gif");
+    private static final ImageIcon CROSS_ICON = new ImageIcon("src/cat.gif");
+    private static final ImageIcon NOUGHT_ICON = new ImageIcon("src/doggie.gif");
     public int row, col; // posisi baris dan kolom
     public Seed content; // isi sel
 
