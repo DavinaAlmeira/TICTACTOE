@@ -9,107 +9,133 @@
  */
 
 import javax.swing.*;
+
+import TicTacToe.GameMainTicTac;
+import TicTacToeAI.GameMainAI;
+import connectFour.GameMain;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-// Import game packages
-import connectFour.GameMain;
-import TicTacToe.GameMainTicTac;
-import TicTacToeAI.GameMainAI;
-
 public class GameSelector {
     public static void main(String[] args) {
-        // Membuat frame utama
-        JFrame frame = new JFrame("Game Selector");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        SwingUtilities.invokeLater(() -> {
+            // Membuat frame utama
+            JFrame frame = new JFrame("Main Menu");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800, 600);
+            frame.setLocationRelativeTo(null); // Menempatkan frame di tengah layar
 
-        // Mengatur agar frame muncul di tengah dan ukuran layar penuh
-        frame.setSize(400, 200); // Ukuran sementara yang lebih kecil
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Membuat frame fullscreen
-        frame.setLayout(new BorderLayout());
+            // Panel utama dengan latar belakang gambar
+            JPanel panel = new JPanel() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    Graphics2D g2d = (Graphics2D) g;
 
-        // Membuat panel dengan background gambar
-        JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
+                    // Membaca gambar untuk dijadikan latar belakang
+                    ImageIcon backgroundImage = new ImageIcon(getClass().getResource("background.jpg")); // Ganti dengan path gambar Anda
+                    Image image = backgroundImage.getImage();
 
-                // Membaca gambar untuk dijadikan latar belakang
-                ImageIcon backgroundImage = new ImageIcon(getClass().getResource("background.jpg")); // Ganti dengan path gambar Anda
-                Image image = backgroundImage.getImage();
+                    // Menggambar gambar pada panel
+                    g2d.drawImage(image, 0, 0, getWidth(), getHeight(), this); // Menyesuaikan gambar dengan ukuran panel
+                }
+            };
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Menggunakan BoxLayout untuk tata letak vertikal
 
-                // Menggambar gambar pada panel
-                g2d.drawImage(image, 0, 0, getWidth(), getHeight(), this); // Menyesuaikan gambar dengan ukuran panel
-            }
-        };
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Menggunakan BoxLayout untuk menumpuk elemen secara vertikal
+            // Menambahkan menu bar
+            JMenuBar menuBar = new JMenuBar();
 
-        // Menambahkan label judul
-        JLabel title = new JLabel("Pilih Game yang Ingin Dimainkan", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 24));
-        title.setForeground(Color.WHITE); // Menentukan warna teks judul menjadi putih
-        title.setAlignmentX(Component.CENTER_ALIGNMENT); // Menyesuaikan posisi tengah
-        title.setBorder(BorderFactory.createEmptyBorder(50, 0, 20, 0)); // Memberikan padding atas dan bawah
-        panel.add(title);
+            // Menu utama
+            JMenu fileMenu = new JMenu("File");
+            JMenuItem exitMenuItem = new JMenuItem("Exit");
+            exitMenuItem.addActionListener(e -> System.exit(0));
+            fileMenu.add(exitMenuItem);
+            menuBar.add(fileMenu);
 
-        // Membuat panel untuk tombol
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20)); // Mengatur tombol dengan jarak antar tombol
-        buttonPanel.setOpaque(false); // Membuat panel tombol transparan
+            JMenu helpMenu = new JMenu("Help");
+            JMenuItem aboutMenuItem = new JMenuItem("About");
+            aboutMenuItem.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Game Develop by Group 8 :\n * 5026231023 - Nadya Luthfiyah Rahma\n" + //
+                                " * 5026231094 - Davina Almeira\n" + //
+                                " * 5026231148 - Tiara Aulia Azadirachta Indica"));
+            helpMenu.add(aboutMenuItem);
+            menuBar.add(helpMenu);
 
-        // Tombol untuk Connect Four
-        JButton connectFourButton = new JButton("Connect Four");
-        connectFourButton.setPreferredSize(new Dimension(150, 50)); // Ukuran tombol
-        connectFourButton.setBackground(new Color(75, 0, 130)); // Warna ungu untuk tombol
-        connectFourButton.setForeground(new Color(220, 193, 190)); // Warna teks tombol
-        connectFourButton.setFont(new Font("Arial", Font.BOLD, 16)); // Ukuran font
-        connectFourButton.addActionListener(new ActionListener() {
-            @Override
+            frame.setJMenuBar(menuBar);
+
+            // Tambahkan spacer di atas
+            panel.add(Box.createVerticalGlue());
+
+            // Menambahkan label judul
+            JLabel title = new JLabel("Pilih Game yang Ingin Dimainkan", SwingConstants.CENTER);
+            title.setFont(new Font("Arial", Font.BOLD, 24));
+            title.setForeground(Color.WHITE); // Warna teks putih
+            title.setAlignmentX(Component.CENTER_ALIGNMENT); // Pusatkan secara horizontal
+            title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Padding atas dan bawah
+            panel.add(title);
+
+            // Membuat panel untuk tombol
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20)); // Mengatur tata letak tombol
+            buttonPanel.setOpaque(false); // Membuat panel tombol transparan
+
+            // Tombol untuk Connect Four
+            JButton connectFourButton = new JButton("Connect Four");
+            connectFourButton.setPreferredSize(new Dimension(150, 50));
+            connectFourButton.setBackground(new Color(75, 0, 130)); // Warna ungu
+            connectFourButton.setForeground(new Color(220, 193, 190)); // Warna teks
+            connectFourButton.setFont(new Font("Arial", Font.BOLD, 16));
+            connectFourButton.addActionListener(new ActionListener() {
+                @Override
             public void actionPerformed(ActionEvent e) {
                 openConnectFour();
             }
+            });
+            buttonPanel.add(connectFourButton);
+
+            // Tombol untuk Tic Tac Toe
+            JButton ticTacToeButton = new JButton("Tic Tac Toe");
+            ticTacToeButton.setPreferredSize(new Dimension(150, 50));
+            ticTacToeButton.setBackground(new Color(75, 0, 130, 215)); // Warna ungu
+            ticTacToeButton.setForeground(new Color(220, 193, 190)); // Warna teks
+            ticTacToeButton.setFont(new Font("Arial", Font.BOLD, 16));
+            ticTacToeButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    openTicTacToe();
+                }
+            });
+            buttonPanel.add(ticTacToeButton);
+
+            // Tombol untuk TicTacToe AI
+            JButton TTaiButton = new JButton("TicTacToe vs AI");
+            TTaiButton.setPreferredSize(new Dimension(150, 50));
+            TTaiButton.setBackground(new Color(75, 0, 130)); // Warna ungu
+            TTaiButton.setForeground(new Color(220, 193, 190)); // Warna teks
+            TTaiButton.setFont(new Font("Arial", Font.BOLD, 16));
+            TTaiButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    openTicTacToeAI();
+                }
+            });
+            buttonPanel.add(TTaiButton);
+
+            // Menambahkan panel tombol ke panel utama
+            buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panel.add(buttonPanel);
+
+            // Tambahkan spacer di bawah
+            panel.add(Box.createVerticalGlue());
+
+            // Menambahkan panel utama ke frame
+            frame.add(panel);
+
+            // Tampilkan frame
+            frame.setVisible(true);
         });
-        buttonPanel.add(connectFourButton);
-
-        // Tombol untuk Tic Tac Toe 
-        JButton ticTacToeButton = new JButton("Tic Tac Toe");
-        ticTacToeButton.setPreferredSize(new Dimension(150, 50)); // Ukuran tombol
-        ticTacToeButton.setBackground(new Color(75, 0, 130, 215)); // Warna ungu untuk tombol
-        ticTacToeButton.setForeground(new Color(220, 193, 190)); // Warna teks tombol
-        ticTacToeButton.setFont(new Font("Arial", Font.BOLD, 16)); // Ukuran font
-        ticTacToeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openTicTacToe();
-            }
-        });
-        buttonPanel.add(ticTacToeButton);
-
-        // Tombol untuk TicTacToe AI
-        JButton TTaiButton = new JButton("TicTacToe vs AI");
-        TTaiButton.setPreferredSize(new Dimension(150, 50)); // Ukuran tombol
-        TTaiButton.setBackground(new Color(75, 0, 130)); // Warna ungu untuk tombol
-        TTaiButton.setForeground(new Color(220, 193, 190)); // Warna teks tombol
-        TTaiButton.setFont(new Font("Arial", Font.BOLD, 16)); // Ukuran font
-        TTaiButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openTicTacToeAI();
-            }
-        });
-        buttonPanel.add(TTaiButton);
-
-        // Menambahkan panel tombol ke panel utama
-        panel.add(buttonPanel);
-
-        // Menampilkan frame dan mengatur posisi di tengah
-        frame.setContentPane(panel);
-        frame.setLocationRelativeTo(null); // Membuat frame muncul di tengah
-        frame.setVisible(true);
     }
-
     // Membuka game Connect Four
     private static void openConnectFour() {
         SwingUtilities.invokeLater(() -> {
@@ -120,6 +146,19 @@ public class GameSelector {
             frame.pack();
             frame.setLocationRelativeTo(null); // Membuat frame muncul di tengah
             frame.setVisible(true);
+
+            // Tombol Exit untuk kembali ke Main Menu
+            JButton exitButton = new JButton("Exit to Main Menu");
+            exitButton.addActionListener(e -> {
+                frame.dispose();
+                main(new String[0]); // Menampilkan kembali Main Menu
+            });
+            // Menambahkan exitButton ke panel game dengan BorderLayout.SOUTH
+            JPanel gamePanel = new JPanel(new BorderLayout());
+            gamePanel.add(game, BorderLayout.CENTER); // Menambahkan game ke panel
+            gamePanel.add(exitButton, BorderLayout.SOUTH); // Menambahkan tombol exit di bawah
+            frame.setContentPane(gamePanel); // Mengatur ulang content pane
+            frame.revalidate(); // Revalidate frame setelah perubahan
         });
     }
 
@@ -135,6 +174,19 @@ public class GameSelector {
                 frame.pack();
                 frame.setLocationRelativeTo(null); // Membuat frame muncul di tengah
                 frame.setVisible(true);
+
+                // Tombol Exit untuk kembali ke Main Menu
+                JButton exitButton = new JButton("Exit to Main Menu");
+                exitButton.addActionListener(e -> {
+                    frame.dispose();
+                    main(new String[0]); // Menampilkan kembali Main Menu
+                });
+                // Menambahkan exitButton ke panel game dengan BorderLayout.SOUTH
+                JPanel gamePanel = new JPanel(new BorderLayout());
+                gamePanel.add(ticTacToeGame, BorderLayout.CENTER); // Menambahkan game ke panel
+                gamePanel.add(exitButton, BorderLayout.SOUTH); // Menambahkan tombol exit di bawah
+                frame.setContentPane(gamePanel); // Mengatur ulang content pane
+                frame.revalidate(); // Revalidate frame setelah perubahan
             }
         });
     }
@@ -151,6 +203,19 @@ public class GameSelector {
                 frame.pack();
                 frame.setLocationRelativeTo(null); // Membuat frame muncul di tengah
                 frame.setVisible(true);
+
+                // Tombol Exit untuk kembali ke Main Menu
+                JButton exitButton = new JButton("Exit to Main Menu");
+                exitButton.addActionListener(e -> {
+                    frame.dispose();
+                    main(new String[0]); // Menampilkan kembali Main Menu
+                });
+                // Menambahkan exitButton ke panel game dengan BorderLayout.SOUTH
+                JPanel gamePanel = new JPanel(new BorderLayout());
+                gamePanel.add(ticTacToeGame, BorderLayout.CENTER); // Menambahkan game ke panel
+                gamePanel.add(exitButton, BorderLayout.SOUTH); // Menambahkan tombol exit di bawah
+                frame.setContentPane(gamePanel); // Mengatur ulang content pane
+                frame.revalidate(); // Revalidate frame setelah perubahan
             }
         });
     }

@@ -39,8 +39,8 @@ public class GameMainTicTac extends JPanel {
    /** Constructor to setup the UI and game components */
    public GameMainTicTac() {
 
-      player1Name = JOptionPane.showInputDialog(this, "Enter your name:");
-        player2Name = JOptionPane.showInputDialog(this, "Enter your name:");
+      player1Name = JOptionPane.showInputDialog(this, "Enter Player 1's Name:");
+        player2Name = JOptionPane.showInputDialog(this, "Enter Player 2's Name:");
         if (player1Name == null || player1Name.trim().isEmpty()) {
             player1Name = "Cat";
         }
