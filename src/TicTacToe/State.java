@@ -8,8 +8,8 @@
  * 3 - 5026231148 - Tiara Aulia Azadirachta Indica
  */
 
-package TicTacToe;
+ package TicTacToe;
 
-public enum State {
-
-}
+ public enum State {  // to save as "State.java"
+    PLAYING, DRAW, CROSS_WON, NOUGHT_WON
+ }

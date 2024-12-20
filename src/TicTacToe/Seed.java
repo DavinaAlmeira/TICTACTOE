@@ -8,8 +8,9 @@
  * 3 - 5026231148 - Tiara Aulia Azadirachta Indica
  */
 
-package TicTacToe;
+ package TicTacToe;
 
-public enum Seed {
 
-}
+ public enum Seed {   // to save as "Seed.java"
+    CROSS, NOUGHT, NO_SEED
+ }
