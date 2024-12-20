@@ -8,7 +8,7 @@
  * 3 - 5026231148 - Tiara Aulia Azadirachta Indica
  */
 
-package TicTacToeAI2;
+package TicTacToeAI;
 
 import java.awt.*;
 

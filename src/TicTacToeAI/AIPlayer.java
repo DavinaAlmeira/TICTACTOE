@@ -8,7 +8,7 @@
  * 3 - 5026231148 - Tiara Aulia Azadirachta Indica
  */
 
-package TicTacToeAI2;
+package TicTacToeAI;
 
 /**
  * Abstract superclass for all AI players with different strategies.

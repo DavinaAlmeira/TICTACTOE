@@ -8,7 +8,7 @@
  * 3 - 5026231148 - Tiara Aulia Azadirachta Indica
  */
 
-package TicTacToeAI2;
+package TicTacToeAI;
 
 /**
  *  The enum State contains the various game states of the TTT game
