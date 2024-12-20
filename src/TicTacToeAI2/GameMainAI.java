@@ -1,3 +1,13 @@
+/**
+ * ES234317-Algorithm and Data Structures
+ * Semester Ganjil, 2024/2025
+ * Group Capstone Project
+ * Group #8
+ * 1 - 5026231023 - Nadya Luthfiyah Rahma
+ * 2 - 5026231094 - Davina Almeira
+ * 3 - 5026231148 - Tiara Aulia Azadirachta Indica
+ */
+
 package TicTacToeAI2;
 
 import java.awt.*;
@@ -42,70 +52,93 @@ public class GameMainAI extends JPanel {
         }
 
         aiPlayer = new AIPlayerMinimax(board); // AI dengan Minimax
-        aiPlayer.setSeed(Seed.NOUGHT); //
         aiPlayer.setSeed(Seed.NOUGHT); // AI menggunakan Seed NOUGHT (lingkaran)
 
         // This JPanel fires MouseEvent
-        super.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {  // mouse-clicked handler
-                int mouseX = e.getX();
-                int mouseY = e.getY();
-                // Get the row and column clicked
-                int row = mouseY / Cell.SIZE;
-                int col = mouseX / Cell.SIZE;
-
-                // Check if the clicked position is within the bounds of the board
-                if (row < 0 || row >= Board.ROWS || col < 0 || col >= Board.COLS) return; // Ignore clicks outside the board
-
-                if (currentState == State.PLAYING) {
-                    if (board.cells[row][col].content == Seed.NO_SEED) {
-                        // Update cells[][] and return the new game state after the move
-                        currentState = board.stepGame(currentPlayer, row, col);
-                        if (currentState == State.PLAYING) {
-                            // Switch player
-                            currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
-
-                            // AI turn
-                            if (currentPlayer == Seed.NOUGHT) {
-                                new Thread(() -> {
-                                    try {
-                                        Thread.sleep(1000); // Delay 1 detik
-                                    } catch (InterruptedException ex) {
-                                        ex.printStackTrace();
-                                    }
-
-                                    SwingUtilities.invokeLater(() -> {
-                                        int[] aiMove = aiPlayer.move();
-                                        // Check if AI move is valid
-                                        if (aiMove[0] >= 0 && aiMove[0] < Board.ROWS && aiMove[1] >= 0 && aiMove[1] < Board.COLS) {
-                                            currentState = board.stepGame(currentPlayer, aiMove[0], aiMove[1]);
-                                        } else {
-                                            // AI move is invalid or null
-                                            System.out.println("AI move is invalid. Skipping AI turn.");
-                                        }
-
-                                        if (currentState == State.PLAYING && currentPlayer == Seed.NOUGHT) {
-                                            int[] bestMove = board.getBestMove(Seed.NOUGHT, Seed.CROSS);
-                                            if (bestMove[0] != -1) {
-                                                currentState = board.stepGame(Seed.NOUGHT, bestMove[0], bestMove[1]);
-                                            }
-                                        }
-
-                                        // Switch back to player 1
-                                        currentPlayer = Seed.CROSS;
-                                        repaint(); // Refresh tampilan
-                                    });
-                                }).start();
-                            }
-                        }
+      super.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {  // mouse-clicked handler
+              int mouseX = e.getX();
+              int mouseY = e.getY();
+              // Get the row and column clicked
+              int row = mouseY / Cell.SIZE;
+              int col = mouseX / Cell.SIZE;
+  
+              // Check if the clicked position is within the bounds of the board
+              if (row < 0 || row >= Board.ROWS || col < 0 || col >= Board.COLS) return; // Ignore clicks outside the board
+  
+              if (currentState == State.PLAYING) {
+                 if (board.cells[row][col].content == Seed.NO_SEED) {
+                    // Update cells[][] and return the new game state after the move
+                    currentState = board.stepGame(currentPlayer, row, col);
+                    // choose appropriate sound
+                    if (currentState == State.CROSS_WON || currentState == State.NOUGHT_WON) {
+                       SoundEffect.WIN.play(); 
+                    } else if (currentState == State.DRAW) {
+                       SoundEffect.DRAW.play(); 
+                    } else if (currentState == State.PLAYING) {
+                       // Play sound for Player 1
+                       if (currentPlayer == Seed.CROSS) {
+                       SoundEffect.player1Name.play();
+                   }
+                       // Switch player
+                       currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+                   
+                       // AI turn
+                       if (currentPlayer == Seed.NOUGHT) {
+                           new Thread(() -> {
+                               try {
+                                   Thread.sleep(1000); // Delay 1 detik
+                               } catch (InterruptedException ex) {
+                                   ex.printStackTrace();
+                               }
+                   
+                               SwingUtilities.invokeLater(() -> {
+                                   int[] aiMove = aiPlayer.move();
+                                   // Check if AI move is valid
+                                   if (aiMove[0] >= 0 && aiMove[0] < Board.ROWS && aiMove[1] >= 0 && aiMove[1] < Board.COLS) {
+                                       currentState = board.stepGame(currentPlayer, aiMove[0], aiMove[1]);
+                   
+                                       // Play appropriate sound clip
+                                       if (currentState == State.CROSS_WON || currentState == State.NOUGHT_WON) {
+                                           SoundEffect.WIN.play(); // Play win sound
+                                       } else if (currentState == State.DRAW) {
+                                           SoundEffect.DRAW.play(); // Play draw sound
+                                       } else if (currentState == State.PLAYING) {
+                                           SoundEffect.player2Name.play(); // Sound for AI's move
+                                       }
+                                   } else {
+                                       System.out.println("AI move is invalid. Skipping AI turn.");
+                                   }
+                   
+                                   if (currentState == State.PLAYING && currentPlayer == Seed.NOUGHT) {
+                                       int[] bestMove = board.getBestMove(Seed.NOUGHT, Seed.CROSS);
+                                       if (bestMove[0] != -1) {
+                                           currentState = board.stepGame(Seed.NOUGHT, bestMove[0], bestMove[1]);
+                   
+                                           // Play sound for AI's second move (if applicable)
+                                           if (currentState == State.PLAYING) {
+                                               SoundEffect.player2Name.play();
+                                           } else {
+                                            SoundEffect.player1Name.play();
+                                           }
+                                       }
+                                   }
+                   
+                                   // Switch back to player 1
+                                   currentPlayer = Seed.CROSS;
+                                   repaint(); // Refresh tampilan
+                               });
+                           }).start();
+                       } 
                     }
-                } else {        // game over
-                    newGame();  // restart the game
-                }
-                // Refresh the drawing canvas
-                repaint();  // Callback paintComponent().
-            }
+                 }
+              } else {        // game over
+                 newGame();  // restart the game
+              }
+              // Refresh the drawing canvas
+              repaint();  // Callback paintComponent().
+           }
         });
 
         // Setup the status bar (JLabel) to display status message
