@@ -32,6 +32,8 @@ public class GameMain extends JPanel {
     public GameMain() {
         //inisialisasi game board
         board = new Board();
+        currentState = State.PLAYING;
+        currentPlayer = Seed.CROSS;
         String[] options = {"Player vs Player", "Player vs AI"};
         int choice = JOptionPane.showOptionDialog(this,
                 "Choose Game Mode",
@@ -84,9 +86,7 @@ public class GameMain extends JPanel {
                 int col = mouseX / Cell.SIZE;
 
                 // Check if the clicked position is within the bounds of the board
-                if (row < 0 || row >= Board.ROWS || col < 0 || col >= Board.COLS) {
-                    return; // Ignore clicks outside the board
-                }
+                if (row < 0 || row >= Board.ROWS || col < 0 || col >= Board.COLS) return; // Ignore clicks outside the board
 
                 if (currentState == State.PLAYING) {
                     if (board.cells[row][col].content == Seed.NO_SEED) {
@@ -105,8 +105,14 @@ public class GameMain extends JPanel {
                                     //AI move is invalid or null
                                     System.out.println("AI move is invalid. Skipping AI turn.");
                                 }
-                                // Switch back to player 1
-                                currentPlayer = Seed.CROSS;
+                                if (currentState == State.PLAYING && currentPlayer == Seed.NOUGHT) {
+                                    int[] bestMove = board.getBestMove(Seed.NOUGHT, Seed.CROSS);
+                                    if (bestMove[0] != -1) {
+                                        currentState = board.stepGame(Seed.NOUGHT, bestMove[0], bestMove[1]);
+                                    }
+                                    // Switch back to player 1
+                                    currentPlayer = Seed.CROSS;
+                                }
                             }
                         }
                     }
@@ -117,14 +123,14 @@ public class GameMain extends JPanel {
                 repaint();  // Callback paintComponent().
             }
         });
-
-        // Play appropriate sound clip
+/*
+       /// Play appropriate sound clip
         if (currentState == State.PLAYING) {
             SoundEffect.EAT_FOOD.play();
         } else {
             SoundEffect.DIE.play();
         }
-
+*/
         // Setup the status bar (JLabel) to display status message
         statusBar = new JLabel();
         statusBar.setFont(FONT_STATUS);

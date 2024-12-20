@@ -144,4 +144,74 @@ public class Board {
             }
         }
     }
+    //AI Turn
+    public int[] getBestMove(Seed aiSeed, Seed opponentSeed) {
+        int bestScore = Integer.MIN_VALUE;
+        int[] bestMove = {-1, -1};
+
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (cells[row][col].content == Seed.EMPTY) {
+                    // Simulasi langkah AI
+                    cells[row][col].content = aiSeed;
+                    int score = minimax(aiSeed, opponentSeed, false);
+                    cells[row][col].content = Seed.EMPTY; // Undo langkah
+
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMove = new int[]{row, col};
+                    }
+                }
+            }
+        }
+        return bestMove;
+    }
+
+    private int minimax(Seed aiSeed, Seed opponentSeed, boolean isMaximizing) {
+        State currentState = evaluateGame(aiSeed, opponentSeed);
+        if (currentState == State.CROSS_WON) return (aiSeed == Seed.CROSS) ? 10 : -10;
+        if (currentState == State.NOUGHT_WON) return (aiSeed == Seed.NOUGHT) ? 10 : -10;
+        if (currentState == State.DRAW) return 0;
+
+        int bestScore = isMaximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (cells[row][col].content == Seed.EMPTY) {
+                    cells[row][col].content = isMaximizing ? aiSeed : opponentSeed;
+                    int score = minimax(aiSeed, opponentSeed, !isMaximizing);
+                    cells[row][col].content = Seed.EMPTY; // Undo langkah
+                    bestScore = isMaximizing
+                            ? Math.max(score, bestScore)
+                            : Math.min(score, bestScore);
+                }
+            }
+        }
+        return bestScore;
+    }
+
+    public Cell[][] getCells() {
+        return cells;
+    }
+
+
+    private State evaluateGame(Seed aiSeed, Seed opponentSeed) {
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (cells[row][col].content != Seed.EMPTY &&
+                        hasWon(cells[row][col].content, row, col)) {
+                    return (cells[row][col].content == aiSeed) ? State.CROSS_WON : State.NOUGHT_WON;
+                }
+            }
+        }
+
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (cells[row][col].content == Seed.EMPTY) {
+                    return State.PLAYING;
+                }
+            }
+        }
+        return State.DRAW;
+    }
+
 }
