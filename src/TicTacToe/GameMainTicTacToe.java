@@ -10,6 +10,6 @@
 
 package TicTacToe;
 
-public enum State {
+public class GameMainTicTacToe {
 
 }
